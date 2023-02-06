@@ -153,8 +153,8 @@ public class Main {
     }
 
     public static Double totalBalanceUAH(Bills bills, ExchangeRates exchangeRates) {
-        TypedQuery<Double> count = em.createQuery("SELECT SUM (o.balanceUAH + (o.balanceEUR * :e) + " +
-                "(o.balanceUSD * :u)) FROM Bills o WHERE o.id = :id", Double.class);
+        TypedQuery<Double> count = em.createQuery("SELECT o.balanceUAH + (o.balanceEUR * :e) + " +
+                "(o.balanceUSD * :u) FROM Bills o WHERE o.id = :id", Double.class);
         count.setParameter("e", exchangeRates.getRateEUR());
         count.setParameter("u", exchangeRates.getRateUSD());
         count.setParameter("id", bills.getCountNumber());
