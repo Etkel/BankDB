@@ -45,7 +45,11 @@ public class Main {
                 em.getTransaction().commit();
             //Total balance in UAH
                 em.getTransaction().begin();
-                System.out.println(totalBalanceUAH(bill3, exchangeRates));
+                Client client1 = new Client("Ollan Jonsan", 42342342L);
+                em.persist(client1);
+                client1.setCounts(bill3);
+                bill3.setUser(client1);
+                System.out.println(totalBalanceUAH(client1, exchangeRates));
                 em.getTransaction().commit();
             } finally {
                 sc.close();
@@ -152,25 +156,12 @@ public class Main {
         }
     }
 
-    public static Double totalBalanceUAH(Bills bills, ExchangeRates exchangeRates) {
+    public static Double totalBalanceUAH(Client client, ExchangeRates exchangeRates) {
         TypedQuery<Double> count = em.createQuery("SELECT o.balanceUAH + (o.balanceEUR * :e) + " +
-                "(o.balanceUSD * :u) FROM Bills o WHERE o.id = :id", Double.class);
+                "(o.balanceUSD * :u) FROM Bills o WHERE o.client.clientKey = :id", Double.class);
         count.setParameter("e", exchangeRates.getRateEUR());
         count.setParameter("u", exchangeRates.getRateUSD());
-        count.setParameter("id", bills.getCountNumber());
+        count.setParameter("id", client.getClientKey());
         return count.getSingleResult();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
