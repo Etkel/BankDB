@@ -10,15 +10,19 @@ public class ExchangeRates {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long exchangeId;
-    private Double rateUSD;
-    private Double rateEUR;
+    private Double buyUSD;
+    private Double buyEUR;
+    private Double saleUSD;
+    private Double saleEUR;
     @OneToMany(mappedBy = "exchangeRates")
     private List<Bills> bills = new ArrayList<>();
 
 
-    public ExchangeRates(Double rateUSD, Double rateEUR) {
-        this.rateUSD = rateUSD;
-        this.rateEUR = rateEUR;
+    public ExchangeRates(Double buyUSD, Double buyEUR, Double saleUSD, Double saleEUR) {
+        this.buyUSD = buyUSD;
+        this.buyEUR = buyEUR;
+        this.saleUSD = saleUSD;
+        this.saleEUR = saleEUR;
     }
 
     public ExchangeRates() {
@@ -37,20 +41,36 @@ public class ExchangeRates {
         this.exchangeId = exchangeId;
     }
 
-    public Double getRateUSD() {
-        return rateUSD;
+    public Double getBuyUSD() {
+        return buyUSD;
     }
 
-    public void setRateUSD(Double rateUSD) {
-        this.rateUSD = rateUSD;
+    public void setBuyUSD(Double buyUSD) {
+        this.buyUSD = buyUSD;
     }
 
-    public Double getRateEUR() {
-        return rateEUR;
+    public Double getBuyEUR() {
+        return buyEUR;
     }
 
-    public void setRateEUR(Double rateEUR) {
-        this.rateEUR = rateEUR;
+    public void setBuyEUR(Double buyEUR) {
+        this.buyEUR = buyEUR;
+    }
+
+    public Double getSaleUSD() {
+        return saleUSD;
+    }
+
+    public void setSaleUSD(Double saleUSD) {
+        this.saleUSD = saleUSD;
+    }
+
+    public Double getSaleEUR() {
+        return saleEUR;
+    }
+
+    public void setSaleEUR(Double saleEUR) {
+        this.saleEUR = saleEUR;
     }
 
     public List<Bills> getBills() {
@@ -65,8 +85,10 @@ public class ExchangeRates {
     public String toString() {
         return "ExchangeRates{" +
                 "exchangeId=" + exchangeId +
-                ", rateUSD=" + rateUSD +
-                ", rateEUR=" + rateEUR +
+                ", buyUSD=" + buyUSD +
+                ", buyEUR=" + buyEUR +
+                ", saleUSD=" + saleUSD +
+                ", saleEUR=" + saleEUR +
                 '}';
     }
 }
