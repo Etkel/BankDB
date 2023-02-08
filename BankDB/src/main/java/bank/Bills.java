@@ -104,7 +104,7 @@ public class Bills {
                     if (getBalanceEUR() - sum > 0) {
                         setBalanceEUR(getBalanceEUR() - sum);
                         addTransaction(new Transactions(Status.DONE,Operation.EXCHANGE));
-                        return exchangeRates.getRateEUR() * getBalanceEUR();
+                        return exchangeRates.getBuyEUR() * getBalanceEUR();
                     } else {
                         System.out.println("Your balance is low!");
                         addTransaction(new Transactions(Status.CANCELLED,Operation.EXCHANGE));
@@ -115,7 +115,47 @@ public class Bills {
                     if (getBalanceUSD() - sum > 0) {
                         setBalanceUSD(getBalanceUSD() - sum);
                         addTransaction(new Transactions(Status.DONE,Operation.EXCHANGE));
-                        return exchangeRates.getRateUSD() * getBalanceUSD();
+                        return exchangeRates.getBuyUSD() * getBalanceUSD();
+                    } else {
+                        System.out.println("U got no cash! Lol");
+                        addTransaction(new Transactions(Status.CANCELLED,Operation.EXCHANGE));
+                        return null;
+                    }
+                }
+                case UAH -> {
+                    return getBalanceUAH();
+                }
+                default -> {
+                    return null;
+                }
+            }
+        } else {
+            addTransaction(new Transactions(Status.CANCELLED,Operation.EXCHANGE));
+            System.out.println("No exchange rates was found!");
+            return null;
+        }
+    }
+
+
+    public Double conversionFromUAH(Currency currency, Double sum) {
+        if (exchangeRates != null) {
+            switch (currency) {
+                case EUR -> {
+                    if (getBalanceUAH() - sum > 0) {
+                        setBalanceUAH(getBalanceUAH() - sum);
+                        addTransaction(new Transactions(Status.DONE,Operation.EXCHANGE));
+                        return exchangeRates.getSaleEUR() * getBalanceEUR();
+                    } else {
+                        System.out.println("Your balance is low!");
+                        addTransaction(new Transactions(Status.CANCELLED,Operation.EXCHANGE));
+                        return null;
+                    }
+                }
+                case USD -> {
+                    if (getBalanceUAH() - sum > 0) {
+                        setBalanceUAH(getBalanceUAH() - sum);
+                        addTransaction(new Transactions(Status.DONE,Operation.EXCHANGE));
+                        return exchangeRates.getSaleUSD() * getBalanceUSD();
                     } else {
                         System.out.println("U got no cash! Lol");
                         addTransaction(new Transactions(Status.CANCELLED,Operation.EXCHANGE));
@@ -138,8 +178,8 @@ public class Bills {
 
     public Double totalCashToUAH() {
         if (exchangeRates != null) {
-            double res = getBalanceUSD() * exchangeRates.getRateUSD() +
-                    getBalanceEUR() * exchangeRates.getRateEUR() +
+            double res = getBalanceUSD() * exchangeRates.getBuyUSD() +
+                    getBalanceEUR() * exchangeRates.getBuyEUR() +
                     getBalanceUAH();
             addTransaction(new Transactions(Status.DONE, Operation.BALANCE));
             return res;
